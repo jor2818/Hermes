@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title%}{{ name }}{% endblock %}
+
+{% block content %}
+<div>
+    <main class="main w-100">
+		<div class="container h-100">
+			<div class="row h-100">
+				<div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+					<div class="d-table-cell align-middle">
+
+						<div class="text-center mt-4">
+							<h1 class="h2">ลงทะเบียนเข้าใช้งาน</h1>
+							<p class="lead">
+								กรุณากรอบแบบฟอร์มเพื่อลงทะเบียนเข้าใช้งาน
+							</p>
+						</div>
+
+						{% with messages = get_flashed_messages() %}
+							{% if messages %}
+								{% for msg in messages %}
+
+									<div class="alert alert-warning alert-dismissible fade show" role="alert">
+										<strong>โปรดตรวจสอบ!</strong> {{ msg }}
+										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								  	</div>
+
+								{% endfor %}
+							{% endif %}
+                    	{% endwith %}
+
+						<div class="card">
+							<div class="card-body">
+								<div class="m-sm-4">
+									<form action="{{ url_for('auth.addmember') }}" method="post">
+										<div class="form-group">
+											<label>ชื่อ</label>
+											<input class="form-control form-control-lg" type="text" name="fname" placeholder="ชื่อ" required/>
+										</div>
+										<div class="form-group">
+											<label>นามสกุล</label>
+											<input class="form-control form-control-lg" type="text" name="lname" placeholder="นามสกุล" required/>
+										</div>
+										<div class="form-group">
+											<label>ชื่อผู้ใช้งาน</label>
+											<input class="form-control form-control-lg" type="text" name="username" placeholder="ชื่อผู้ใช้งาน" required/>
+										</div>
+										<div class="form-group">
+											<label>Email</label>
+											<input class="form-control form-control-lg" type="email" name="email" placeholder="email" required/>
+										</div>
+										<div class="form-group">
+											<label>รหัสผ่าน</label>
+											<input class="form-control form-control-lg" type="password" name="password_1" placeholder="รหัสผ่าน" required/>
+										</div>
+										<div class="form-group">
+											<label>ยืนยันรหัสผ่าน</label>
+											<input class="form-control form-control-lg" type="password" name="password_2" placeholder="ยืนยันรหัสผ่าน" required/>
+										</div>
+										<div class="text-center mt-5">
+											<!-- <a href="dashboard-default.html" class="btn btn-lg btn-primary">Sign up</a> -->
+											<button type="submit" class="btn btn-lg btn-primary">ลงทะเบียน</button>
+										</div>
+									</form>
+                                    <br>
+									<div class="text-center mt-3">ลงทะเบียนเรียบร้อยแล้ว? <a href="{{url_for('auth.login')}}">ลงชื่อเข้าใช้งาน</a>
+									หรือ <a href="{{url_for('views.home')}}">กลับสู่หน้าหลัก</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>
+{% endblock %}
