@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title%}{{ name }}{% endblock %}
+
+{% block content %}
+<div>
+
+    <main class="main h-100 w-100">
+
+        <div class="container">
+
+            <div class="py-5 text-center">
+                <img class="d-block mx-auto mb-4" src="#" alt="" width="72" height="57">
+                <h2>ฟอร์มแจ้งเรื่องราว/ร้องทุกข์</h2>
+                <p class="lead">ผู้แจ้งเรื่องราว/ร้องทุกข์จำเป็นต้องให้ข้อมูลชื่อและเบอร์โทรศัพท์ที่ติดต่อได้ พร้อมให้รายละเอียดของเรื่องราวที่ต้องการแจ้งหรือข้อความร้องทุกข์ พร้อมทั้งรูปถ่ายบุคคลและสถานที่ที่เกิดเหตุ หรือต้องการความช่วยเหลือ เพื่อเจ้าหน้าที่จะได้เข้าช่วยเหลือได้อย่างถูกต้องและรวดเร็ว</p>
+            </div>
+        
+            <hr class="my-4">
+            <div class="container">
+        
+        
+                <form action="">
+                    <div class="row g-5">
+                        <div class="col-12">
+                        <h4 class="mb-3">รายละเอียดของเรื่องราว</h4>
+                        <form class="needs-validation" novalidate="">
+                            <div class="row g-3">
+                            <div class="col-12">
+                                <label for="firstName" class="form-label">ชื่อผู้แจ้ง</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                                <div class="invalid-feedback">
+                                จำเป็นต้องกรอกชื่อผู้แจ้ง
+                                </div>
+                            </div>
+                
+                
+                            <div class="col-12">
+                                <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
+                                <input type="text" class="form-control" id="phone" placeholder="" required="">
+                                <div class="invalid-feedback">
+                                กรุณากรอกเบอร์โทรศัพท์ที่ติดต่อได้
+                                </div>
+                            </div>
+        
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                    <label for="floatingTextarea2">ข้อความเรื่องราว/ร้องทุกข์</label>
+                                </div>
+                            </div>
+        
+                            <hr class="my-4">
+                            
+                
+                            <div class="col-12">
+                                <div class="upload__box">
+                                    <div class="upload__btn-box">
+                                      <label class="upload__btn">
+                                        <p>Upload images</p>
+                                        <input type="file" multiple="" data-max_length="20" class="upload__inputfile">
+                                      </label>
+                                    </div>
+                                    <div class="upload__img-wrap"></div>
+                                </div>
+                            </div>
+                                    
+                        </form>
+        
+                            <hr class="my-4">
+                
+                            <button class="w-100 btn btn-primary btn-lg" type="submit">ส่งข้อความเรื่องราว/ร้องทุกข์</button>
+                        </div>
+                    </div>
+        
+                </form>
+            </div>
+
+
+        </div>
+        
+
+    </main>
+    
+
+    
+    
+</div>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        ImgUpload();
+      });
+      
+      function ImgUpload() {
+        var imgWrap = "";
+        var imgArray = [];
+      
+        $('.upload__inputfile').each(function () {
+          $(this).on('change', function (e) {
+            imgWrap = $(this).closest('.upload__box').find('.upload__img-wrap');
+            var maxLength = $(this).attr('data-max_length');
+      
+            var files = e.target.files;
+            var filesArr = Array.prototype.slice.call(files);
+            var iterator = 0;
+            filesArr.forEach(function (f, index) {
+      
+              if (!f.type.match('image.*')) {
+                return;
+              }
+      
+              if (imgArray.length > maxLength) {
+                return false
+              } else {
+                var len = 0;
+                for (var i = 0; i < imgArray.length; i++) {
+                  if (imgArray[i] !== undefined) {
+                    len++;
+                  }
+                }
+                if (len > maxLength) {
+                  return false;
+                } else {
+                  imgArray.push(f);
+      
+                  var reader = new FileReader();
+                  reader.onload = function (e) {
+                    var html = "<div class='upload__img-box'><div style='background-image: url(" + e.target.result + ")' data-number='" + $(".upload__img-close").length + "' data-file='" + f.name + "' class='img-bg'><div class='upload__img-close'></div></div></div>";
+                    imgWrap.append(html);
+                    iterator++;
+                  }
+                  reader.readAsDataURL(f);
+                }
+              }
+            });
+          });
+        });
+      
+        $('body').on('click', ".upload__img-close", function (e) {
+          var file = $(this).parent().data("file");
+          for (var i = 0; i < imgArray.length; i++) {
+            if (imgArray[i].name === file) {
+              imgArray.splice(i, 1);
+              break;
+            }
+          }
+          $(this).parent().parent().remove();
+        });
+      }
+
+</script>
+{% endblock %}

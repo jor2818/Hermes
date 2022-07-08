@@ -3,6 +3,19 @@
 
 {% block content %}
 <div>
-    <h1>Hello World!</h1>
+    <form action="{{ url_for('views.form') }}">
+
+        <div class="px-4 py-5 my-5 text-center">
+            <img class="d-block mx-auto mb-4" src="#" alt="" width="72" height="57">
+            <h1 class="display-5 fw-bold">แจ้งเรื่องราว/ร้องทุกข์</h1>
+            <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">โครงการ Hermes เป็นเว็บแอฟสำหรับให้ประชาชนโดยทั่วไปได้แจ้งเรื่องราวความทุกข์ หรือร้องทุกข์ที่ทำให้เกิดความทุกข์ร้อนหรือวุ่นวายต่อเจ้าหน้าที่หน่วยงานที่เกี่ยวข้อง ได้รับรู้และดำเนินการแก้ไขอย่างเร่งด่วน</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">แจ้งเรื่องราว/ร้องทุกข์</button>
+            </div>
+            </div>
+        </div>
+    </form>
+    
 </div>
 {% endblock %}

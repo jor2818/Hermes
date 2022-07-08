@@ -7,6 +7,10 @@ views = Blueprint("views",__name__)
 def home():
     return render_template('home.html', name="HOME")
 
+@views.route("/form")
+def form():
+    return render_template('form.html', name="FORM")
+
 
 @views.route("/about")
 def about():
