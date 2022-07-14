@@ -2,6 +2,20 @@
 {% block title%}{{ name }}{% endblock %}
 
 {% block content %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>ประสบความสำเร็จ!</strong> {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
 <div>
     <form action="{{ url_for('views.form') }}">
 

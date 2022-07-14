@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
 import secrets
-from os import path
 from datetime import timedelta
 
 
@@ -14,13 +13,16 @@ def create_app():
     app.config['SECRET_KEY'] = secret_key_hash
     app.permanent_session_lifetime = timedelta(minutes=10)
     
+    
     from .views import views
     from .auth import auth
+    from .post import post
     # create the Views Blueprint
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(post, url_prefix='/')
 
-    
+
 
     
     return app
