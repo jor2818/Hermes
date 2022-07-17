@@ -17,6 +17,3 @@ def form():
 def about():
     return render_template('about.html',name="ABOUT")
 
-@views.route("/dashboard")
-def dashboard():
-    return render_template('dash.html')

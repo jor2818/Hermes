@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for, flash
+from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
@@ -26,11 +26,12 @@ def addpost():
         name = request.form['name']
         phone = request.form['phone']
         data = request.form['data']
+        title = request.form['title']
         
         with con:
             cur = con.cursor()
-            sql = "INSERT INTO post (name, phone, data, create_post) VALUES (%s, %s, %s, %s)"
-            cur.execute(sql,(name,phone,data,datetime.now()))
+            sql = "INSERT INTO post (name, phone, title, data, create_post) VALUES (%s, %s, %s,%s, %s)"
+            cur.execute(sql,(name,phone,title,data,datetime.now()))
             con.commit()
             
             x = cur.execute("SELECT LAST_INSERT_ID() FROM post")
@@ -48,4 +49,41 @@ def addpost():
   
         return redirect(url_for('views.home'))
         
+@post.route('/showpost', methods=['POST','GET'])
+def showpost():
+    
+    if "username" not in session:
+        return redirect(url_for('auth.login'))
+
+    with con:
+        cur = con.cursor()
+        sql = "SELECT * FROM post ORDER BY create_post DESC"
+        cur.execute(sql)
+        rows = cur.fetchall()
+        print(rows)
+        return render_template('dash.html', rows=rows)
+
+@post.route('/postdetail/<string:post_id>', methods=['POST','GET'])
+def postdetail(post_id):
+    
+    if "username" not in session:
+        return redirect(url_for('auth.login'))
+    
+    with con:
+        cur = con.cursor()
+        sql = "SELECT * FROM post WHERE id = %s"
+        cur.execute(sql, post_id)
+        details = cur.fetchall()
+        print(details)
+        sql = "SELECT * FROM photo WHERE post_id = %s"
+        cur.execute(sql, post_id)
+        photos = cur.fetchall()
+        print(photos)
+
         
+        return render_template('postcontent.html', details=details, photos=photos)
+
+@post.route('/display/<filename>')
+def display_image(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)

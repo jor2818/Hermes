@@ -79,7 +79,7 @@ def checklogin():
                     session['username'] = username
                     session['fname'] = rows[0][1]
                     session.permanent = True
-                    return redirect(url_for('views.dashboard'))
+                    return redirect(url_for('post.showpost'))
                 else:
                     flash("รหัสผ่านไม่ถูกต้อง โปรดใส่ชื่อผู้ใช้และรหัสผ่านอีกครั้ง")
             

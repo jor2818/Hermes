@@ -8,13 +8,13 @@
 
         <div class="container">
 
-            <div class="py-5 text-center">
+            <div class="py-4 text-center">
                 <img class="d-block mx-auto mb-4" src="#" alt="" width="72" height="57">
-                <h2>ฟอร์มแจ้งเรื่องราว/ร้องทุกข์</h2>
+                <h2>แบบฟอร์มแจ้งเรื่องราว/ร้องทุกข์</h2>
                 <p class="lead">ผู้แจ้งเรื่องราว/ร้องทุกข์จำเป็นต้องให้ข้อมูลชื่อและเบอร์โทรศัพท์ที่ติดต่อได้ พร้อมให้รายละเอียดของเรื่องราวที่ต้องการแจ้งหรือข้อความร้องทุกข์ พร้อมทั้งรูปถ่ายบุคคลและสถานที่ที่เกิดเหตุ หรือต้องการความช่วยเหลือ เพื่อเจ้าหน้าที่จะได้เข้าช่วยเหลือได้อย่างถูกต้องและรวดเร็ว</p>
             </div>
         
-            <hr class="my-4">
+            <hr class="my-3">
             <div class="container">
         
         
@@ -40,11 +40,20 @@
                                 กรุณากรอกเบอร์โทรศัพท์ที่ติดต่อได้
                                 </div>
                             </div>
+
+                            <div class="col-12">
+                                <label for="title" class="form-label">หัวเรื่อง</label>
+                                <input type="text" class="form-control" id="title" name = "title" placeholder="" required="">
+                                <div class="invalid-feedback">
+                                หัวเรื่อง
+                                </div>
+                            </div>
         
                             <div class="col-12">
+                                <label for="data" class="form-label">ข้อความเรื่องราว/ร้องทุกข์</label>
                                 <div class="form-floating">
                                     <textarea class="form-control" name = "data" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                    <label for="floatingTextarea2">ข้อความเรื่องราว/ร้องทุกข์</label>
+                                    <label for="floatingTextarea2">รายละเอียด</label>
                                 </div>
                             </div>
         
@@ -53,7 +62,7 @@
                 
                             <div class="col-12">
                               <div class="form-group">
-                                <label>Choose Images: </label>
+                                <label>เลือกรูปภาพ: </label>
                                 <input type="file" name="files[]" id="fileInput" class="form-control" multiple="multiple" >
                                 <output id="result"></output>
                               </div>
