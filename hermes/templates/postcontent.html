@@ -36,6 +36,23 @@
       </div>
     </nav>
 
+    <div class="container">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>ไม่ประสบความสำเร็จ!</strong> {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    </div>
+    
     
     <div>
       <article class="mb-4">
@@ -50,11 +67,20 @@
                         <h4>แจ้งโดย : {{ detail.1 }}</h4>
                         <h4>เบอร์โทรศัพท์ : {{ detail.2 }}</h4>
                         <h3 class="post-subtitle">{{ detail.4 }}</h3>
-                        {% for photo in photos %}
-                          <div>
-                              <img src="{{ url_for('post.display_image', filename=photo.1) }}">
+                        <div class="container">
+
+                          <div class="row">
+                              {% for photo in photos %}
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <a href="{{ url_for('post.showmap', filename=photo.1) }}"><img src="{{ url_for('post.display_image', filename=photo.1) }}" class="img-fluid"></a>
+                                </div>
+                              {% endfor %}
+
                           </div>
-                        {% endfor %}
+
+                          
+                        </div>
+                        
 
                     {% endfor %}
                 </div>
