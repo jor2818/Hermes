@@ -3,11 +3,11 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 import pymysql
+from flask_paginate import Pagination, get_page_parameter, get_page_args
 from exif import Image
 import reverse_geocoder as rg
-#import pycountry
 import webbrowser
-import urllib.request
+
 
 
 con = pymysql.connect("localhost","root","root","hermes",8889)
@@ -19,6 +19,8 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 path = os.getcwd()
 # file Upload
 UPLOAD_FOLDER = os.path.join(path, 'hermes/static/uploads/')
+
+global post_id
 
 def allowed_file(filename):
  return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -43,6 +45,7 @@ def draw_map_for_location(latitude, latitude_ref, longitude, longitude_ref):
     decimal_longitude = dms_coordinates_to_dd_coordinates(longitude, longitude_ref)
     url = f"https://www.google.com/maps?q={decimal_latitude},{decimal_longitude}"
     webbrowser.open_new_tab(url)
+
 
 @post.route('/addpost', methods=['POST','GET'])
 def addpost():
@@ -87,10 +90,25 @@ def showpost():
         cur.execute(sql)
         rows = cur.fetchall()
         print(rows)
-        return render_template('dash.html', rows=rows)
+
+        
+        # pagination section
+        search = False
+        q = request.args.get('q')
+        if q:
+            search = True
+        
+        page = request.args.get(get_page_parameter(), type=int, default=1)
+
+        pagination = Pagination(page=page, total=len(rows), per_page=5,record_name='rows', search=search)
+        
+
+        
+        return render_template('dash.html', rows=rows, pagination=pagination)
 
 @post.route('/postdetail/<string:post_id>', methods=['POST','GET'])
 def postdetail(post_id):
+    
     
     if "username" not in session:
         return redirect(url_for('auth.login'))
@@ -106,15 +124,15 @@ def postdetail(post_id):
         photos = cur.fetchall()
         print(photos)
         
-        return render_template('postcontent.html', details=details, photos=photos)
+        return render_template('postcontent.html', details=details, photos=photos, post_id=post_id)
 
-@post.route('/display/<filename>')
+@post.route('/display/<filename>', methods=['POST','GET'])
 def display_image(filename):
     #print('display_image filename: ' + filename)
     return redirect(url_for('static', filename='uploads/' + filename), code=301)
 
-@post.route('/map/<filename>')
-def showmap(filename):
+@post.route('/map/<post_id>/<filename>', methods=['POST','GET'])
+def showmap(filename, post_id):
     
     filename = UPLOAD_FOLDER + filename
     with open(filename, "rb") as pic_file:
@@ -130,9 +148,9 @@ def showmap(filename):
             
         except (AttributeError, KeyError):
             
-            flash('รูปภาพไมมีข้อมูลตำแหน่งบนแผนที่ โปรดเลือกรูปอื่น')
-            return redirect(request.url)
+            flash('รูปภาพไม่มีข้อมูลตำแหน่งบนแผนที่ โปรดเลือกรูปอื่น')
+            return redirect(url_for('post.postdetail', post_id = post_id ))
     else:
         flash('รูปภาพไม่มีข้อมูลสำคัญสำหรับการแสดงตำแหน่งบนแผนที่ โปรดเลือกรูปอื่น')
     
-    return redirect(request.url)
+    return redirect(url_for('post.postdetail', post_id = post_id ))
