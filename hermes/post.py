@@ -3,9 +3,8 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 import pymysql
-from flask_paginate import Pagination, get_page_parameter, get_page_args
+from flask_paginate import Pagination, get_page_parameter
 from exif import Image
-import reverse_geocoder as rg
 import webbrowser
 
 
