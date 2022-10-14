@@ -16,8 +16,6 @@ numpy==1.23.1
 plum-py==0.8.1
 pycountry==22.3.5
 pycparser==2.21
-PyMySQL==0.9.3
-reverse-geocoder==1.5.1
 scipy==1.8.1
 SQLAlchemy==1.4.39
 Werkzeug==2.1.2
