@@ -89,22 +89,16 @@ def showpost():
         sql = "SELECT * FROM post ORDER BY create_post DESC"
         cur.execute(sql)
         rows = cur.fetchall()
-        print(rows)
 
         
-        # pagination section
-        search = False
-        q = request.args.get('q')
-        if q:
-            search = True
-        
+        # pagination section      
         page = request.args.get(get_page_parameter(), type=int, default=1)
-
-        pagination = Pagination(page=page, total=len(rows), per_page=5,record_name='rows', search=search)
-        
-
-        
-        return render_template('dash.html', rows=rows, pagination=pagination)
+        start = (page-1)*5
+        end = start + 5
+        row = rows[start:end]
+        pagination = Pagination(page=page, total=len(rows), per_page=5, record_name='rows')
+               
+        return render_template('dash.html', rows=row, pagination=pagination,)
 
 @post.route('/postdetail/<string:post_id>', methods=['POST','GET'])
 def postdetail(post_id):
